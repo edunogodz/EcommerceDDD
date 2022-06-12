@@ -7,6 +7,6 @@ namespace Domain.Interfaces.InterfaceServices
         Task AddProduct(Produto produto);
         Task UpdateProduct(Produto produto);
 
-        //Task<List<Produto>> ListarProdutosComEstoque(string descricao);
+        Task<List<Produto>> ListarProdutosComEstoque(string descricao);
     }
 }

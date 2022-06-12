@@ -58,20 +58,20 @@ namespace ApplicationApp.OpenApp
         //    return await _IProduct.ObterProdutoCarrinho(idProdutoCarrinho);
         //}
 
-        //public async Task<List<Produto>> ListarProdutosUsuario(string userId)
-        //{
-        //    return await _IProduct.ListarProdutosUsuario(userId);
-        //}
+        public async Task<List<Produto>> ListarProdutosUsuario(string userId)
+        {
+            return await _IProduct.ListarProdutosUsuario(userId);
+        }
         //public async Task<List<Produto>> ListarProdutosVendidos(string userId, string filtro)
         //{
         //    return await _IProduct.ListarProdutosVendidos(userId, filtro);
         //}
 
 
-        //public async Task<List<Produto>> ListarProdutosComEstoque(string descricao)
-        //{
-        //    return await _IServiceProduct.ListarProdutosComEstoque(descricao);
-        //}
+        public async Task<List<Produto>> ListarProdutosComEstoque(string descricao)
+        {
+            return await _IServiceProduct.ListarProdutosComEstoque(descricao);
+        }
 
     }
 }

@@ -2,6 +2,7 @@
 using Entities.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web_ECommerce.Controllers
@@ -9,21 +10,25 @@ namespace Web_ECommerce.Controllers
     [Authorize]
     public class ProdutosController : Controller
     {
-        private readonly InterfaceProductApp _InterfaceProductApp;
-        public ProdutosController(InterfaceProductApp InterfaceProductApp)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly InterfaceProductApp _interfaceProductApp;
+        public ProdutosController(InterfaceProductApp InterfaceProductApp, UserManager<ApplicationUser> userManager)
         {
-            _InterfaceProductApp = InterfaceProductApp;
+            _interfaceProductApp = InterfaceProductApp;
+            _userManager = userManager;
         }
         // GET: ProdutosController
         public async Task<IActionResult> Index()
         {
-            return View(await _InterfaceProductApp.List());
+            var UserId = await RetornarIdUsuarioLogado();
+           
+            return View(await _interfaceProductApp.ListarProdutosUsuario(UserId));
         }
 
         // GET: ProdutosController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            return View(await _InterfaceProductApp.GetEntityById(id));
+            return View(await _interfaceProductApp.GetEntityById(id));
         }
 
         // GET: ProdutosController/Create
@@ -39,19 +44,21 @@ namespace Web_ECommerce.Controllers
         {
             try
             {
-                await _InterfaceProductApp.AddProduct(produto);
+                var UserId = await RetornarIdUsuarioLogado();
+                produto.UserId = UserId;
+                await _interfaceProductApp.AddProduct(produto);
                 if (produto.Notitycoes.Any())
                 {
                     foreach (var item in produto.Notitycoes)
                     {
                         ModelState.AddModelError(item.NomePropriedade, item.mensagem);
                     }
-                    return View("Edit",produto);
+                    return View("Create",produto);
                 }                
             }
             catch
             {
-                return View("Edit", produto);
+                return View("Create", produto);
             }
             return RedirectToAction(nameof(Index));
         }
@@ -59,7 +66,7 @@ namespace Web_ECommerce.Controllers
         // GET: ProdutosController/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            return View(await _InterfaceProductApp.GetEntityById(id));
+            return View(await _interfaceProductApp.GetEntityById(id));
         }
 
         // POST: ProdutosController/Edit/5
@@ -69,7 +76,7 @@ namespace Web_ECommerce.Controllers
         {
             try
             {
-                await _InterfaceProductApp.UpdateProduct(produto);
+                await _interfaceProductApp.UpdateProduct(produto);
                 if (produto.Notitycoes.Any())
                 {
                     foreach (var item in produto.Notitycoes)
@@ -89,7 +96,7 @@ namespace Web_ECommerce.Controllers
         // GET: ProdutosController/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            return View(await _InterfaceProductApp.GetEntityById(id));
+            return View(await _interfaceProductApp.GetEntityById(id));
         }
 
         // POST: ProdutosController/Delete/5
@@ -99,8 +106,8 @@ namespace Web_ECommerce.Controllers
         {
             try
             {
-                var produtoDeletar = await _InterfaceProductApp.GetEntityById(id);
-                await _InterfaceProductApp.Delete(produtoDeletar);
+                var produtoDeletar = await _interfaceProductApp.GetEntityById(id);
+                await _interfaceProductApp.Delete(produtoDeletar);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -108,5 +115,32 @@ namespace Web_ECommerce.Controllers
                 return View();
             }
         }
+
+        private async Task<string> RetornarIdUsuarioLogado()
+        {
+            var UserLogged = await _userManager.GetUserAsync(User);
+            return UserLogged.Id;
+        }
+
+        //[AllowAnonymous]
+        //[HttpGet("/api/ListarProdutosComEstoque")]
+        //public async Task<JsonResult> ListarProdutosComEstoque(string descricao)
+        //{
+        //    return Json(await _interfaceProductApp.ListarProdutosComEstoque(descricao));
+        //}
+
+        [AllowAnonymous]
+        [HttpGet("/api/ListarProdutosComEstoque")]
+        public async Task<JsonResult> ListarProdutosComEstoque()
+        {
+            return Json(await _interfaceProductApp.ListarProdutosComEstoque(""));
+        }
+
+        [HttpPost("/api/AdicionarProdutoCarrinho")]
+        public async Task AdicionarProdutoCarrinho(string id,string nome, string qtd)
+        {
+
+        }
+
     }
 }

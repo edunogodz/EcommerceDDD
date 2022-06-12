@@ -18,35 +18,29 @@ namespace Domain.Services
         {
             var validaNome = produto.ValidarPropriedadeString(produto.Nome, "Nome");
 
-            var validaValor = produto.ValidarPropriedadeDecimal(produto.Valor, "Valor");
+            var validaValor = produto.ValidarPropriedadeDecimal(produto.Valor, "Valor");          
 
-            if (validaNome && validaValor)
-            {                
+            var validaQtdEstoque = produto.ValidarPropriedadeInt(produto.QtdEstoque, "QtdEstoque");
+
+            if (validaNome && validaValor && validaQtdEstoque)
+            {
+                produto.DataCadastro = DateTime.Now;
+                produto.DataAlteracao = DateTime.Now;
                 produto.Estado = true;
                 await _IProduct.Add(produto);
             }
-
-            //var validaQtdEstoque = produto.ValidarPropriedadeInt(produto.QtdEstoque, "QtdEstoque");
-
-            //if (validaNome && validaValor && validaQtdEstoque)
-            //{
-            //    produto.DataCadastro = DateTime.Now;
-            //    produto.DataAlteracao = DateTime.Now;
-            //    produto.Estado = true;
-            //    await _IProduct.Add(produto);
-            //}
         }
 
-        //public async Task<List<Produto>> ListarProdutosComEstoque(string descricao)
-        //{
-        //    //if (string.IsNullOrWhiteSpace(descricao))
-        //    //    return await _IProduct.ListarProdutos(p => p.QtdEstoque > 0);
-        //    //else
-        //    //{
-        //    //    return await _IProduct.ListarProdutos(p => p.QtdEstoque > 0
-        //    //    && p.Nome.ToUpper().Contains(descricao.ToUpper()));
-        //    //}
-        //}
+        public async Task<List<Produto>> ListarProdutosComEstoque(string descricao)
+        {
+            if (string.IsNullOrWhiteSpace(descricao))
+                return await _IProduct.ListarProdutos(p => p.QtdEstoque > 0);
+            else
+            {
+                return await _IProduct.ListarProdutos(p => p.QtdEstoque > 0
+                && p.Nome.ToUpper().Contains(descricao.ToUpper()));
+            }
+        }
 
         public async Task UpdateProduct(Produto produto)
         {
@@ -54,19 +48,14 @@ namespace Domain.Services
 
             var validaValor = produto.ValidarPropriedadeDecimal(produto.Valor, "Valor");
 
-            if (validaNome && validaValor)
-            {              
+            var validaQtdEstoque = produto.ValidarPropriedadeInt(produto.QtdEstoque, "QtdEstoque");
+
+            if (validaNome && validaValor && validaQtdEstoque)
+            {
+                produto.DataAlteracao = DateTime.Now;
+
                 await _IProduct.Update(produto);
             }
-
-            //var validaQtdEstoque = produto.ValidarPropriedadeInt(produto.QtdEstoque, "QtdEstoque");
-
-            //if (validaNome && validaValor && validaQtdEstoque)
-            //{
-            //    produto.DataAlteracao = DateTime.Now;
-
-            //    await _IProduct.Update(produto);
-            //}
         }
     }
 }

@@ -3,6 +3,7 @@ using Entities.Entities;
 using Infrastructure.Configuration;
 using Infrastructure.Repository.Generics;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Repository.Repositories
 {
@@ -14,13 +15,13 @@ namespace Infrastructure.Repository.Repositories
             _optionsbuilder = new DbContextOptions<ContextBase>();
         }
 
-        //public async Task<List<Produto>> ListarProdutos(Expression<Func<Produto, bool>> exProduto)
-        //{
-        //    using (var banco = new ContextBase(_optionsbuilder))
-        //    {
-        //        return await banco.Produto.Where(exProduto).AsNoTracking().ToListAsync();
-        //    }
-        //}
+        public async Task<List<Produto>> ListarProdutos(Expression<Func<Produto, bool>> exProduto)
+        {
+            using (var banco = new ContextBase(_optionsbuilder))
+            {
+                return await banco.Produto.Where(exProduto).AsNoTracking().ToListAsync();
+            }
+        }
 
         //public async Task<List<Produto>> ListarProdutosCarrinhoUsuario(string userId)
         //{
@@ -75,13 +76,13 @@ namespace Infrastructure.Repository.Repositories
         //}
 
 
-        //public async Task<List<Produto>> ListarProdutosUsuario(string userId)
-        //{
-        //    using (var banco = new ContextBase(_optionsbuilder))
-        //    {
-        //        return await banco.Produto.Where(p => p.UserId == userId).AsNoTracking().ToListAsync();
-        //    }
-        //}
+        public async Task<List<Produto>> ListarProdutosUsuario(string userId)
+        {
+            using (var banco = new ContextBase(_optionsbuilder))
+            {
+                return await banco.Produto.Where(p => p.UserId == userId).AsNoTracking().ToListAsync();
+            }
+        }
 
         //public async Task<List<Produto>> ListarProdutosVendidos(string userId, string filtro)
         //{
