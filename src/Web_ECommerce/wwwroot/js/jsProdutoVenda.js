@@ -18,10 +18,12 @@ ObjetoVenda.AdicionarCarrinho = function (idProduto) {
 
             if (data.sucesso) {
                 // 1 alert-success// 2 alert-warning// 3 alert-danger
+                //alert("OK");
                 ObjetoAlerta.AlertarTela(1, "Produto adicionado no carrinho!");
             }
             else {
                 // 1 alert-success// 2 alert-warning// 3 alert-danger
+                //alert("Usuario nao logado!");
                 ObjetoAlerta.AlertarTela(2, "Necessário efetuar o login!");
             }
         }
@@ -60,7 +62,7 @@ ObjetoVenda.CarregaProdutos = function () {
 
                 htmlConteudo += "<label>  Valor: " + Entitie.valor + "</label></br>";
 
-                htmlConteudo += "Quantidade : <input type'number' value='1' id='" + idQtd + "'>";
+                htmlConteudo += "Quantidade : <input type='number' value='1' id='" + idQtd + "'>";
 
                 htmlConteudo += "<input type='button' onclick='ObjetoVenda.AdicionarCarrinho(" + Entitie.id + ")' value ='Comprar'> </br> ";
 
@@ -73,12 +75,32 @@ ObjetoVenda.CarregaProdutos = function () {
     });
 }
 
+ObjetoVenda.CarregaQtdCarrinho = function () {
+
+    $("#qtdCarrinho").text("(0)");
+
+    $.ajax({
+        type: 'GET',
+        url: "/api/QtdProdutosCarrinho",
+        dataType: "JSON",
+        cache: false,
+        async: true,
+        success: function (data) {
+            if (data.sucesso) {
+                $("#qtdCarrinho").text("(" + data.qtd +")");
+            }
+        }
+    });
+
+    setTimeout(ObjetoVenda.CarregaQtdCarrinho, 10000);
+}
+
 $(function () {
 
     //CarregarMenu();
 
     ObjetoVenda.CarregaProdutos();
-    //ObjetoVenda.CarregaQtdCarrinho();
+    ObjetoVenda.CarregaQtdCarrinho();
 
 
     $("#buscar").click(

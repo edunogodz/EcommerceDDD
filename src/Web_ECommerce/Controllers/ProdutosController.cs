@@ -1,7 +1,6 @@
 ﻿using ApplicationApp.Interfaces;
 using Entities.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +11,13 @@ namespace Web_ECommerce.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly InterfaceProductApp _interfaceProductApp;
-        public ProdutosController(InterfaceProductApp InterfaceProductApp, UserManager<ApplicationUser> userManager)
+        private readonly InterfaceCompraUsuarioApp _InterfaceCompraUsuarioApp;
+        public ProdutosController(InterfaceProductApp InterfaceProductApp, 
+            InterfaceCompraUsuarioApp InterfaceCompraUsuarioApp, 
+            UserManager<ApplicationUser> userManager)
         {
             _interfaceProductApp = InterfaceProductApp;
+            _InterfaceCompraUsuarioApp = InterfaceCompraUsuarioApp;
             _userManager = userManager;
         }
         // GET: ProdutosController
@@ -83,6 +86,10 @@ namespace Web_ECommerce.Controllers
                     {
                         ModelState.AddModelError(item.NomePropriedade, item.mensagem);
                     }
+
+                    ViewBag.Alerta = true;
+                    ViewBag.Mensagem = "Verifique, ocorreu algum erro!";
+
                     return View("Edit", produto);
                 }
             }
@@ -136,11 +143,37 @@ namespace Web_ECommerce.Controllers
             return Json(await _interfaceProductApp.ListarProdutosComEstoque(""));
         }
 
-        [HttpPost("/api/AdicionarProdutoCarrinho")]
-        public async Task AdicionarProdutoCarrinho(string id,string nome, string qtd)
+        public async Task<IActionResult> ListarProdutosCarrinhoUsuario()
         {
-
+            var UserId = await RetornarIdUsuarioLogado();
+            return View(await _interfaceProductApp.ListarProdutosCarrinhoUsuario(UserId));
         }
+
+
+      
+        public async Task<IActionResult> RemoverCarrinho(int id)
+        {
+            return View(await _interfaceProductApp.ObterProdutoCarrinho(id));
+        }
+
+        // POST: ProdutosController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoverCarrinho(int id, Produto produto)
+        {
+            try
+            {
+                var produtoDeletar = await _InterfaceCompraUsuarioApp.GetEntityById(id);
+                await _InterfaceCompraUsuarioApp.Delete(produtoDeletar);
+                return RedirectToAction(nameof(ListarProdutosCarrinhoUsuario));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+
 
     }
 }

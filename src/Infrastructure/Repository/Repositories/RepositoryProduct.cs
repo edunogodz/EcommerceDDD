@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.InterfaceProduct;
 using Entities.Entities;
+using Entities.Entities.Enums;
 using Infrastructure.Configuration;
 using Infrastructure.Repository.Generics;
 using Microsoft.EntityFrameworkCore;
@@ -23,57 +24,57 @@ namespace Infrastructure.Repository.Repositories
             }
         }
 
-        //public async Task<List<Produto>> ListarProdutosCarrinhoUsuario(string userId)
-        //{
-        //    using (var banco = new ContextBase(_optionsbuilder))
-        //    {
-        //        var produtosCarrinhoUsuario = await (from p in banco.Produto
-        //                                             join c in banco.CompraUsuario on p.Id equals c.IdProduto
-        //                                             join co in banco.Compra on c.IdCompra equals co.Id
-        //                                             where c.UserId.Equals(userId)
-        //                                             && c.Estado == EnumEstadoCompra.Produto_Carrinho
-        //                                             select new Produto
-        //                                             {
-        //                                                 Id = p.Id,
-        //                                                 Nome = p.Nome,
-        //                                                 Descricao = p.Descricao,
-        //                                                 Observacao = p.Observacao,
-        //                                                 Valor = p.Valor,
-        //                                                 QtdCompra = c.QtdCompra,
-        //                                                 IdProdutoCarrinho = c.Id,
-        //                                                 Url = p.Url,
-        //                                                 DataCompra = co.DataCompra
+        public async Task<List<Produto>> ListarProdutosCarrinhoUsuario(string userId)
+        {
+            using (var banco = new ContextBase(_optionsbuilder))
+            {
+                var produtosCarrinhoUsuario = await (from p in banco.Produto
+                                                     join c in banco.CompraUsuario on p.Id equals c.ProdutoId
+                                                     //join co in banco.Compra on c.IdCompra equals co.Id
+                                                     where c.UserId.Equals(userId)
+                                                     && c.Estado == EnumEstadoCompra.Produto_Carrinho
+                                                     select new Produto
+                                                     {
+                                                         Id = p.Id,
+                                                         Nome = p.Nome,
+                                                         Descricao = p.Descricao,
+                                                         Observacao = p.Observacao,
+                                                         Valor = p.Valor,
+                                                         QtdCompra = c.QtdCompra,
+                                                         IdProdutoCarrinho = c.Id,
+                                                         //Url = p.Url,
+                                                         //DataCompra = co.DataCompra
 
-        //                                             }).AsNoTracking().ToListAsync();
+                                                     }).AsNoTracking().ToListAsync();
 
-        //        return produtosCarrinhoUsuario;
+                return produtosCarrinhoUsuario;
 
-        //    }
-        //}
+            }
+        }
 
-        //public async Task<Produto> ObterProdutoCarrinho(int idProdutoCarrinho)
-        //{
-        //    using (var banco = new ContextBase(_optionsbuilder))
-        //    {
-        //        var produtosCarrinhoUsuario = await (from p in banco.Produto
-        //                                             join c in banco.CompraUsuario on p.Id equals c.IdProduto
-        //                                             where c.Id.Equals(idProdutoCarrinho) && c.Estado == EnumEstadoCompra.Produto_Carrinho
-        //                                             select new Produto
-        //                                             {
-        //                                                 Id = p.Id,
-        //                                                 Nome = p.Nome,
-        //                                                 Descricao = p.Descricao,
-        //                                                 Observacao = p.Observacao,
-        //                                                 Valor = p.Valor,
-        //                                                 QtdCompra = c.QtdCompra,
-        //                                                 IdProdutoCarrinho = c.Id,
-        //                                                 Url = p.Url
-        //                                             }).AsNoTracking().FirstOrDefaultAsync();
+        public async Task<Produto> ObterProdutoCarrinho(int idProdutoCarrinho)
+        {
+            using (var banco = new ContextBase(_optionsbuilder))
+            {
+                var produtosCarrinhoUsuario = await (from p in banco.Produto
+                                                     join c in banco.CompraUsuario on p.Id equals c.ProdutoId
+                                                     where c.Id.Equals(idProdutoCarrinho) && c.Estado == EnumEstadoCompra.Produto_Carrinho
+                                                     select new Produto
+                                                     {
+                                                         Id = p.Id,
+                                                         Nome = p.Nome,
+                                                         Descricao = p.Descricao,
+                                                         Observacao = p.Observacao,
+                                                         Valor = p.Valor,
+                                                         QtdCompra = c.QtdCompra,
+                                                         IdProdutoCarrinho = c.Id,
+                                                         //Url = p.Url
+                                                     }).AsNoTracking().FirstOrDefaultAsync();
 
-        //        return produtosCarrinhoUsuario;
+                return produtosCarrinhoUsuario;
 
-        //    }
-        //}
+            }
+        }
 
 
         public async Task<List<Produto>> ListarProdutosUsuario(string userId)
