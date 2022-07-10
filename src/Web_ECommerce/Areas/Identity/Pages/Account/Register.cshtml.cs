@@ -46,60 +46,63 @@ namespace Web_ECommerce.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
-        public InputModel Input { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        public string ReturnUrl { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+        public InputModel Input { get; set; }     
+        public string ReturnUrl { get; set; }      
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }     
         public class InputModel
-        {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+        {         
             [Required]
-            [EmailAddress]
+            [EmailAddress]            
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+            [Required]
+            [MaxLength(50)]           
+            [Display(Name = "CPF")]
+            public string CPF { get; set; }
+
+            [Display(Name = "Idade")]
+            public int Idade { get; set; }
+
+            [Required]
+            [MaxLength(255)]
+            [Display(Name = "Nome")]
+            public string Nome { get; set; }
+
+            [Required]
+            [MaxLength(15)]
+            [Display(Name = "CEP")]
+            public string CEP { get; set; }
+
+            [Required]
+            [MaxLength(255)]
+            [Display(Name = "Endereço")]
+            public string Endereco { get; set; }
+            
+            [MaxLength(450)]
+            [Display(Name = "Complemento de Endereço")]
+            public string ComplementoEndereco { get; set; }
+
+            [MaxLength(20)]
+            [Display(Name = "Celular")]
+            public string Celular { get; set; }
+
+            [MaxLength(20)]
+            [Display(Name = "Telefone")]
+            public string Telefone { get; set; }
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
-
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+           
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
-
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -113,7 +116,24 @@ namespace Web_ECommerce.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                //var user = CreateUser();
+
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    CPF = Input.CPF,
+                    Idade = Input.Idade,
+                    Nome = Input.Nome,
+                    CEP = Input.CEP,
+                    Celular = Input.Celular,
+                    Telefone = Input.Telefone,
+                    Endereco = Input.Endereco,
+                    ComplementoEndereco = Input.ComplementoEndereco,
+                    Estado = true,
+                    Tipo = Entities.Entities.Enums.TipoUsuario.Comum,
+                   
+                };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
