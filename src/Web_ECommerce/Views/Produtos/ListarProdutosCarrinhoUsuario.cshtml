@@ -13,6 +13,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
+            <th>Imagem</th>
             <th>
                 @Html.DisplayNameFor(model => model.Descricao)
             </th>
@@ -21,7 +22,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor)
-            </th>           
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.QtdCompra)
             </th>
@@ -36,6 +37,14 @@
                     @Html.DisplayFor(modelItem => item.Nome)
                 </td>
                 <td>
+                    @{
+                        if (!string.IsNullOrWhiteSpace(item.Url))
+                        {
+                            <img width="80" height=80 src=@item.Url />
+                        }
+                    }
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
                 <td>
@@ -43,7 +52,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Valor)
-                </td>               
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.QtdCompra)
                 </td>

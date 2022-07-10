@@ -30,7 +30,6 @@ ObjetoVenda.AdicionarCarrinho = function (idProduto) {
     });
 }
 
-
 /*ObjetoVenda.CarregaProdutos = function (descricao) {*/
 ObjetoVenda.CarregaProdutos = function () {
 
@@ -55,10 +54,10 @@ ObjetoVenda.CarregaProdutos = function () {
 
                 htmlConteudo += "</br><label id='" + idNome + "' > Produto: " + Entitie.nome + "</label></br>";
 
-                //if (Entitie.url != null && Entitie.url != "" && Entitie.url != undefined) {
+                if (Entitie.url != null && Entitie.url != "" && Entitie.url != undefined) {
 
-                //    htmlConteudo += "<img width='200' height='100' src='" + Entitie.url + "'/></br>";
-                //}
+                    htmlConteudo += "<img width='200' height='100' src='" + Entitie.url + "'/></br>";
+                }
 
                 htmlConteudo += "<label>  Valor: " + Entitie.valor + "</label></br>";
 

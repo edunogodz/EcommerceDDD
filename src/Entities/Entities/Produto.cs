@@ -1,4 +1,5 @@
 ﻿using Entities.Notifications;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -58,11 +59,11 @@ namespace Entities.Entities
         [NotMapped]
         public int QtdCompra { get; set; }
 
-        //[NotMapped]
-        //public IFormFile Imagem { get; set; }
+        [NotMapped]
+        public IFormFile Imagem { get; set; }
 
-        //[Column("PRD_URL")]
-        //public string Url { get; set; }
+        [Column("PRD_URL")]
+        public string Url { get; set; }
 
         //[NotMapped]
         //public DateTime? DataCompra { get; set; }

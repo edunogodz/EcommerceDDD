@@ -3,6 +3,8 @@ using Entities.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security;
+using System.Security.Permissions;
 
 namespace Web_ECommerce.Controllers
 {
@@ -12,19 +14,22 @@ namespace Web_ECommerce.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly InterfaceProductApp _interfaceProductApp;
         private readonly InterfaceCompraUsuarioApp _InterfaceCompraUsuarioApp;
-        public ProdutosController(InterfaceProductApp InterfaceProductApp, 
-            InterfaceCompraUsuarioApp InterfaceCompraUsuarioApp, 
-            UserManager<ApplicationUser> userManager)
+        private IWebHostEnvironment _environment;
+        public ProdutosController(InterfaceProductApp InterfaceProductApp,
+            InterfaceCompraUsuarioApp InterfaceCompraUsuarioApp,
+            UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment environment)
         {
             _interfaceProductApp = InterfaceProductApp;
             _InterfaceCompraUsuarioApp = InterfaceCompraUsuarioApp;
             _userManager = userManager;
+            _environment = environment;
         }
         // GET: ProdutosController
         public async Task<IActionResult> Index()
         {
             var UserId = await RetornarIdUsuarioLogado();
-           
+
             return View(await _interfaceProductApp.ListarProdutosUsuario(UserId));
         }
 
@@ -56,8 +61,10 @@ namespace Web_ECommerce.Controllers
                     {
                         ModelState.AddModelError(item.NomePropriedade, item.mensagem);
                     }
-                    return View("Create",produto);
-                }                
+                    return View("Create", produto);
+                }
+
+                await SalvarImagemProduto(produto);
             }
             catch
             {
@@ -149,8 +156,6 @@ namespace Web_ECommerce.Controllers
             return View(await _interfaceProductApp.ListarProdutosCarrinhoUsuario(UserId));
         }
 
-
-      
         public async Task<IActionResult> RemoverCarrinho(int id)
         {
             return View(await _interfaceProductApp.ObterProdutoCarrinho(id));
@@ -173,7 +178,36 @@ namespace Web_ECommerce.Controllers
             }
         }
 
+        public async Task SalvarImagemProduto(Produto produtoTela)
+        {
+            try
+            {
+                var produto = await _interfaceProductApp.GetEntityById(produtoTela.Id);
+                if (produtoTela.Imagem != null)
+                {
+                    var webRoot = _environment.WebRootPath;
+                    var permissionSet = new PermissionSet(PermissionState.Unrestricted);
+                    var writePermission = new FileIOPermission(FileIOPermissionAccess.Append, string.Concat(webRoot, "/imgProdutos"));
+                    permissionSet.AddPermission(writePermission);
 
+                    var Extension = Path.GetExtension(produtoTela.Imagem.FileName);
 
+                    var NomeArquivo = string.Concat(produto.Id.ToString(), Extension);
+
+                    var diretorioArquivoSalvar = string.Concat(webRoot, "\\imgProdutos\\", NomeArquivo);
+
+                    produtoTela.Imagem.CopyTo(new FileStream(diretorioArquivoSalvar, FileMode.Create));
+
+                    produto.Url = string.Concat("https://localhost:5001", "/imgProdutos/", NomeArquivo);
+
+                    await _interfaceProductApp.UpdateProduct(produto);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
