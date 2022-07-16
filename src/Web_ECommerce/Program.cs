@@ -36,6 +36,7 @@ builder.Services.AddSingleton<InterfaceCompraUsuarioApp, AppCompraUsuario>();
 
 //SERVICES
 builder.Services.AddSingleton<IServiceProduct, ServiceProduct>();
+builder.Services.AddSingleton<IServiceCompraUsuario, ServiceCompraUsuario>();
 
 var app = builder.Build();
 

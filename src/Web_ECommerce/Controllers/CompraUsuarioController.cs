@@ -11,11 +11,59 @@ namespace Web_ECommerce.Controllers
         private readonly InterfaceCompraUsuarioApp _InterfaceCompraUsuarioApp;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CompraUsuarioController(InterfaceCompraUsuarioApp interfaceCompraUsuarioApp, UserManager<ApplicationUser> userManager)
+        public CompraUsuarioController( UserManager<ApplicationUser> userManager, InterfaceCompraUsuarioApp interfaceCompraUsuarioApp)
         {
             _InterfaceCompraUsuarioApp = interfaceCompraUsuarioApp;
             _userManager = userManager;
         }
+        public async Task<IActionResult> FinalizarCompra()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+            var compraUsuario = await _InterfaceCompraUsuarioApp.CarrinhoCompras(usuario.Id);
+            return View(compraUsuario);
+        }
+
+
+        public async Task<IActionResult> MinhasCompras(bool mensagem = false)
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+            var compraUsuario = await _InterfaceCompraUsuarioApp.ProdutosComprados(usuario.Id);
+
+            if (mensagem)
+            {
+                ViewBag.Sucesso = true;
+                ViewBag.Mensagem = "Compra efetivada com sucesso. Pague o boleto para garantir sua compra!";
+            }
+
+            return View(compraUsuario);
+        }
+
+
+        public async Task<IActionResult> ConfirmaCompra()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+
+            var sucesso = await _InterfaceCompraUsuarioApp.ConfirmaCompraCarrinhoUsuario(usuario.Id);
+
+            if (sucesso)
+            {
+                return RedirectToAction("MinhasCompras", new { mensagem = true });
+            }
+            else
+                return RedirectToAction("FinalizarCompra");
+        }
+
+        //public async Task<IActionResult> Imprimir(int id)
+        //{
+        //    var usuario = await _userManager.GetUserAsync(User);
+
+        //    var compraUsuario = await _InterfaceCompraUsuarioApp.ProdutosComprados(usuario.Id, id);
+
+        //    return await Download(compraUsuario, _environment);
+
+        //}
+
+
 
         [HttpPost("/api/AdicionarProdutoCarrinho")]
         public async Task<JsonResult> AdicionarProdutoCarrinho(string id, string nome, string qtd)
