@@ -30,8 +30,7 @@ ObjetoVenda.AdicionarCarrinho = function (idProduto) {
     });
 }
 
-/*ObjetoVenda.CarregaProdutos = function (descricao) {*/
-ObjetoVenda.CarregaProdutos = function () {
+ObjetoVenda.CarregaProdutos = function (descricao) {
 
     $.ajax({
         type: 'GET',
@@ -39,7 +38,7 @@ ObjetoVenda.CarregaProdutos = function () {
         dataType: "JSON",
         cache: false,
         async: true,
-        //data: { descricao: descricao },
+        data: { descricao: descricao },
 
         success: function (data) {
 

@@ -13,15 +13,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Entities", "5 - Entities", "{95C5A545-1D91-494B-85D1-0065C04E8334}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "src\Entities\Entities.csproj", "{22B5CEAD-3D85-4030-ADB8-26266C194667}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "src\Entities\Entities.csproj", "{22B5CEAD-3D85-4030-ADB8-26266C194667}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{A31C9FF0-2A31-4D47-A404-75FDAF706C78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{A31C9FF0-2A31-4D47-A404-75FDAF706C78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{0189D556-DAF2-467D-A77A-2E3BBE8A6044}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{0189D556-DAF2-467D-A77A-2E3BBE8A6044}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationApp", "src\ApplicationApp\ApplicationApp.csproj", "{7D9B35E8-A553-4A35-A07B-BDAC8DC3A39C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationApp", "src\ApplicationApp\ApplicationApp.csproj", "{7D9B35E8-A553-4A35-A07B-BDAC8DC3A39C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_ECommerce", "src\Web_ECommerce\Web_ECommerce.csproj", "{DA2D01F8-2A20-4AB0-9C77-5C95603C8FED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web_ECommerce", "src\Web_ECommerce\Web_ECommerce.csproj", "{DA2D01F8-2A20-4AB0-9C77-5C95603C8FED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6 - Test", "6 - Test", "{AD13F994-37C3-4693-9A57-7DF5546C8DB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestEcommerceDDD", "src\UnitTestEcommerceDDD\UnitTestEcommerceDDD.csproj", "{715588D0-F7C7-439D-A0AF-D8DDC7D7B024}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{DA2D01F8-2A20-4AB0-9C77-5C95603C8FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA2D01F8-2A20-4AB0-9C77-5C95603C8FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA2D01F8-2A20-4AB0-9C77-5C95603C8FED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{715588D0-F7C7-439D-A0AF-D8DDC7D7B024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{715588D0-F7C7-439D-A0AF-D8DDC7D7B024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{715588D0-F7C7-439D-A0AF-D8DDC7D7B024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{715588D0-F7C7-439D-A0AF-D8DDC7D7B024}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +67,7 @@ Global
 		{0189D556-DAF2-467D-A77A-2E3BBE8A6044} = {6B3BEE21-37A3-4842-9438-5AED70839326}
 		{7D9B35E8-A553-4A35-A07B-BDAC8DC3A39C} = {26A02BE5-2380-455A-8160-BDFABD997059}
 		{DA2D01F8-2A20-4AB0-9C77-5C95603C8FED} = {E156F7A6-D505-4E16-A57B-4C5888CC771E}
+		{715588D0-F7C7-439D-A0AF-D8DDC7D7B024} = {AD13F994-37C3-4693-9A57-7DF5546C8DB1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C239F413-075D-40CF-AFF8-BF282619CAF5}
